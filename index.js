@@ -6,10 +6,15 @@ app.use(express.json());
 
 
 app.post("/api/v1/pessoa", (req, res) => {
-    
-    const id = req.body.id;
-    const cpf = req.body.cpf;
-    const email = req.body.email;
+
+    const { id, cpf, email } = req.body
+
+    if (! id || !cpf || !email) {
+        return res.status(400).json({ error: "Envie todos os campos obrigatórios" });
+    }
+
+    db.push({ id, cpf, email });
+    return res.status(201).json({ message: "Usuário criado com sucesso!" });
 });
 
 
@@ -32,3 +37,4 @@ app.delete("/api/v1/pessoa/:id", (req, res) => {
 app.listen(3000, () => {
     console.log("Server is running on port 3000");
 });
+
